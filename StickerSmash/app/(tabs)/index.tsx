@@ -1,4 +1,4 @@
-import { ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { ImageSourcePropType, Platform, StyleSheet, View } from 'react-native';
 import ImageViewer from '@/components/ImageViewer';
 import Button from '@/components/Button';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,6 +11,7 @@ import EmojiSticker from '@/components/EmojiSticker';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { captureRef } from 'react-native-view-shot';
 import { saveToLibraryAsync } from 'expo-media-library';
+import DomToImage from 'dom-to-image';
 
 const PlaceholderImage = require('@/assets/images/images/background-image.png');
 
@@ -53,18 +54,35 @@ export default function Index() {
         setIsModalVisible(false);
     };
     const onSaveImageAsync = async () => {
-        try {
-            const localUri = await captureRef(imageRef, {
-                height: 440,
-                quality: 1,
-            });
+        if (Platform.OS !== 'web') {
+            try {
+                const localUri = await captureRef(imageRef, {
+                    height: 440,
+                    quality: 1,
+                });
 
-            await saveToLibraryAsync(localUri);
-            if (localUri) {
-                alert('Saved!');
+                await saveToLibraryAsync(localUri);
+                if (localUri) {
+                    alert('Saved!');
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
+        } else {
+            try {
+                const dataUrl = await DomToImage.toJpeg(imageRef.current, {
+                    quality: 0.95,
+                    width: 320,
+                    height: 440,
+                });
+
+                let link = document.createElement('a');
+                link.download = 'stciker-smash.jpeg';
+                link.href = dataUrl;
+                link.click();
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
