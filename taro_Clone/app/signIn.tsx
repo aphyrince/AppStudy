@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-export default function Main() {
+export default function SignIn() {
     return (
         <View>
-            <Text>Main</Text>
+            <Text>SignIn</Text>
         </View>
     );
 }

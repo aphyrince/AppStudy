@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-export default function about() {
+export default function CardSelection() {
     return (
         <View>
-            <Text>about</Text>
+            <Text>CardSelection</Text>
         </View>
     );
 }
