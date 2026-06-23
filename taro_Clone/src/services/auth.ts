@@ -22,7 +22,7 @@ const signUp = async (email: string, password: string) => {
 };
 
 const signIn = async (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // const user = userCredential.user;
             return { success: 200 };
