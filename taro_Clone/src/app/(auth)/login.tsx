@@ -1,7 +1,9 @@
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { signIn } from '../../services/auth';
+import colors from '../../styles/colors';
+import fonts from '../../styles/fonts';
 
 export default function Login() {
     const router = useRouter();
@@ -15,9 +17,10 @@ export default function Login() {
     };
 
     return (
-        <View>
-            <Text>로그인</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>로그인</Text>
             <TextInput
+                style={styles.input}
                 keyboardType='email-address'
                 autoCapitalize='none'
                 textContentType='emailAddress'
@@ -26,15 +29,43 @@ export default function Login() {
                 onChangeText={(text) => setEmail(text)}
             />
             <TextInput
+                style={styles.input}
                 textContentType='password'
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 secureTextEntry
             />
-            <Button title='로그인' onPress={handleLogin} />
-            <Button title='회원가입' onPress={() => router.navigate('/signIn')} />
+            <Pressable style={styles.button} onPress={handleLogin}>
+                <Text>로그인</Text>
+            </Pressable>
+            <Pressable style={(styles.link, styles.button)} onPress={() => router.navigate('/signIn')}>
+                <Text>회원가입</Text>
+            </Pressable>
         </View>
     );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: colors.primary,
+        padding: 16,
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 700,
+        color: colors.text,
+        fontFamily: fonts.medium,
+        textAlign: 'center',
+        marginBottom: 24,
+    },
+    input: {
+        marginBottom: 16,
+        borderColor: colors.secondary,
+        padding: 4,
+        borderWidth: 2,
+    },
+    button: { marginTop: 8, backgroundColor: colors.third },
+    link: { marginTop: 16, alignSelf: 'center' },
+});
