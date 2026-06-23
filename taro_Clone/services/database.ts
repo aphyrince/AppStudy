@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 import { db, auth } from './firebase';
 
 const saveReading = async (cards: Card[]) => {
@@ -20,7 +20,8 @@ const saveReading = async (cards: Card[]) => {
 const getReadings = async () => {
     const user = auth.currentUser;
     if (user) {
-        const querySnapshot = await getDocs(collection(db, 'history'));
+        const q = query(collection(db, 'history'), where('userid', '==', user.uid));
+        const querySnapshot = await getDocs(q);
 
         const historyData = querySnapshot.docs.map((doc) => ({
             id: doc.id,
