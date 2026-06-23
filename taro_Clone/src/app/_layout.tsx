@@ -1,30 +1,17 @@
 import { Stack, useRouter } from 'expo-router';
-import { auth } from '../services/firebase';
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { useAuth } from '../hooks/useAuth';
 
 export default function RootLayout() {
     const router = useRouter();
-    const [initializing, setInitializing] = useState(true);
-    const [user, setUser] = useState<User | null>(null);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            if (initializing) setInitializing(false);
-        });
-        return unsubscribe;
-    }, [initializing]);
+    const { user, initializing } = useAuth();
 
     useEffect(() => {
         if (initializing) return;
 
-        if (!user) {
-            router.replace('/login');
-        } else {
-            router.replace('/(tabs)');
-        }
+        if (!user) router.replace('/login');
+        else router.replace('/(tabs)');
     }, [initializing, router, user]);
 
     if (initializing) {
