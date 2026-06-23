@@ -2,40 +2,21 @@ import { auth } from './firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 const signUp = async (email: string, password: string) => {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            console.log(user);
-            return {
-                success: 200,
-            };
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            return {
-                success: 400,
-                message: errorMessage,
-                code: errorCode,
-            };
-        });
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        return { success: 200, user: userCredential.user };
+    } catch (error: any) {
+        return { success: 400, message: error.message };
+    }
 };
 
 const signIn = async (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // const user = userCredential.user;
-            return { success: 200 };
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            return {
-                success: 400,
-                message: errorMessage,
-                code: errorCode,
-            };
-        });
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return { success: 200, user: userCredential.user };
+    } catch (error: any) {
+        return { success: 400, message: error.message, code: error.code };
+    }
 };
 
 const signOut = async () => {

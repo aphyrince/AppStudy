@@ -1,24 +1,27 @@
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
+import { signUp } from '../../services/auth';
 import { useRouter } from 'expo-router';
-import { signIn } from '../../services/auth';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 
-export default function Login() {
+export default function SignUp() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
-        const result = await signIn(email, password);
-        if (result.success === 200) router.replace('/(tabs)');
-        else Alert.alert('로그인 실패!');
+    const handleSignup = async () => {
+        const result = await signUp(email, password);
+        if (result.success === 200) router.navigate('/(tabs)');
+        else {
+            Alert.alert('회원가입 실패!');
+            console.log('회원가입 실패! : ', result.message);
+        }
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>로그인</Text>
+            <Text style={styles.title}>회원가입</Text>
             <TextInput
                 style={styles.input}
                 keyboardType='email-address'
@@ -35,11 +38,11 @@ export default function Login() {
                 onChangeText={(text) => setPassword(text)}
                 secureTextEntry
             />
-            <Pressable style={styles.button} onPress={handleLogin}>
-                <Text>로그인</Text>
-            </Pressable>
-            <Pressable style={[styles.link, styles.button]} onPress={() => router.navigate('/signUp')}>
+            <Pressable style={styles.button} onPress={handleSignup}>
                 <Text>회원가입</Text>
+            </Pressable>
+            <Pressable style={[styles.link, styles.button]} onPress={() => router.navigate('/login')}>
+                <Text>로그인 화면으로 돌아가기</Text>
             </Pressable>
         </View>
     );
