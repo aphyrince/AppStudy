@@ -8,7 +8,9 @@ export default function Login() {
     return (
         <View>
             <Text>login</Text>
-            <Button title='Go to About' onPress={() => router.navigate('/index')} />
+            <TextInput />
+            <TextInput />
+            <Button title='Go to About' onPress={() => router.navigate('/(tabs)')} />
         </View>
     );
 }
