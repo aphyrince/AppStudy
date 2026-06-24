@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         textAlign: 'center',
         marginBottom: 16,
-        color: colors.primary,
+        color: colors.text,
         fontFamily: fonts.medium,
     },
     cardsContainer: {
