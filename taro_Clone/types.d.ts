@@ -5,3 +5,10 @@ interface Card {
     frontImage: any;
     description: string;
 }
+
+interface HistoryItem {
+    id: string;
+    userId: string;
+    date: string;
+    cards: Cards[];
+}

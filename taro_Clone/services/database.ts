@@ -17,21 +17,25 @@ const saveReading = async (cards: Card[]) => {
     }
 };
 
-const getReadings = async () => {
+const getReadings = async (): Promise<HistoryItem[]> => {
     const user = auth.currentUser;
-    if (user) {
-        const q = query(collection(db, 'history'), where('userid', '==', user.uid));
-        const querySnapshot = await getDocs(q);
+    if (!user) return [];
 
-        const historyData = querySnapshot.docs.map((doc) => ({
+    const q = query(collection(db, 'history'), where('userId', '==', user.uid));
+    const querySnapshot = await getDocs(q);
+
+    const historyData: HistoryItem[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
             id: doc.id,
-            ...doc.data(),
-        }));
+            userId: data.userId,
+            date: data.date,
+            cards: data.cards as Card[],
+        };
+    });
 
-        console.log(historyData);
-        return historyData;
-    }
-    return [];
+    console.log(historyData);
+    return historyData;
 };
 
 export { saveReading, getReadings };

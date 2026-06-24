@@ -21,4 +21,4 @@ export const cardImages = {
     19: require('./cards/20.png'),
     20: require('./cards/21.png'),
     21: require('./cards/22.png'),
-  };
+};
